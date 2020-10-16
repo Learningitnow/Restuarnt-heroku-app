@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hot Restaurant</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+  <script src="https://code.jquery.com/jquery.js"></script>
+</head>
+
+<body>
+  <div class="container">
+    <div class="jumbotron">
+      <h1>Hot Restaurant</h1>
+      <h3>Starter template here :)</h3>
+      <hr>
+      <a href="/" class="btn btn-danger btn-lg"><span class="fa fa-plus"></span> Main Page</a>
+	</div>
+	<!-- this is sample code ... you will be changing this! -->
+    <div class="row">
+		<div class="col">
+            <form method="POST" role="form">
+
+                <div class="form-group">
+                  <label for="name">Name</label>
+                  <input type="text" class="form-control" id="name">
+                </div>
+  
+                <div class="form-group">
+                  <label for="phone">Phone</label>
+                  <input type="text" class="form-control" id="phone">
+                </div>  
+              </form>
+
+			<button onClick="tableReserve(event)">Reserve!</button>
+			<div id='tableMessage'></div>
+		</div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    // this is a function to wrap the POST complexity
+    // note you must AWAIT this response.
+    // alternatively use jQuery $.post()
+    function postUrl( url, data={} ){
+        const postData = { 
+            headers: { 'Content-Type': 'application/json' },
+            method: 'post',
+            body: JSON.stringify( data )
+        }
+        return fetch( url,postData ).then( res=>res.json() )
+    }
+
+	async function tableReserve( event ){
+		event.preventDefault()
+
+        const tableData = {
+            name: document.querySelector('#name').value
+        }
+
+		const result = await postUrl( '/api/tables/reserve', tableData )
+		document.querySelector('#tableMessage').textContent = result.message
+	}
+  </script>
+</body>
+</html>
